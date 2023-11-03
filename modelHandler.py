@@ -24,7 +24,7 @@ def baseline(Xtrain, Xtest, clf, lstScoring, cv = 5):
         print('      {} {} --> {:.4f}'.format(scoring.capitalize(), spc, score))
     print('================================')
 
-def paramTuning(pipe, pipeN, parGrid, cv = 5, score = 'accuracy', vrb = 0):
+def paramTuning(X, y, pipe, pipeN, parGrid, cv = 5, score = 'accuracy', vrb = 0):
     
     ''' Hyperparameter tuning process '''
     
@@ -34,15 +34,15 @@ def paramTuning(pipe, pipeN, parGrid, cv = 5, score = 'accuracy', vrb = 0):
         
     gridSCV = GridSearchCV(estimator = pipe, param_grid = parGrid, cv= cv,
                            scoring = score, n_jobs = -1, verbose = vrb, refit= False)
-    gridSCV.fit(data.trainX, data.trainY)
+    gridSCV.fit(X, y)
     gscvDF = pd.DataFrame(gridSCV.cv_results_)
     rstDF = gscvDF[gscvDF['rank_test_' + score[-1]] == 1][cols].iloc[0]
     strHead = '='*(len(pipeN)+6)
     print('{}\n== {} ==\n{}\n'.format(strHead, pipeN, strHead))
-    print('Parameters: {}\n'.format(rstDF[cols[0]]))
+    print('Parametros: {}\n'.format(rstDF[cols[0]]))
     for i in range(len(score)):
         spc = " "*(9-len(score[i]))
-        print('{} score{} --> {:.4f}'.format(score[i].capitalize(), spc, rstDF[cols[i+1]]))
+        print('{} {} --> {:.4f}'.format(score[i].capitalize(), spc, rstDF[cols[i+1]]))
 
 def modelValidation(lstPipe, lstPipeN, lstLbl, figSizeCM = [6,3]):
     
