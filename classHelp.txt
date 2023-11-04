@@ -604,17 +604,7 @@
 		bestM:     Final model.
 		fig:       Figure to plot feature importance.
 		top:       Number of feature to plot, by default = 10.
-		
-	featImp(self, model, fig, top):
-        
-        Function that plots the feature importance.
-        
-        Arguments
-		---------
-		model:     Final model.
-		fig:       Figure to plot feature importance.
-		top:       Number of feature to plot.
-		
+
 	savePred(self, pred):
         
 		Function that takes an array of predictions and save it into an excel file.

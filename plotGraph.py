@@ -140,13 +140,13 @@ def plotConfMatrix(clfN, yTest, yPred, target_names, title='Confusion matrix',
     ax.text(2.55,0.2,'Recall: '+str(round(recall_score(yTest, yPred),4)),fontsize=legFS)
     ax.text(2.55,0.4,'F1: '+str(round(f1_score(yTest, yPred),4)),fontsize=legFS)
     
-def plotFeatImp(X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45,
-                xTicksFS = 11, plotC = 'b', barW = 0.9, barTxtFS = 11, simb = ''):
+def plotFeatImp(X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45, xTicksFS = 11,
+                plotC = 'b', barW = 0.9, barTxtFS = 11, simb = '', ):
     
     ''' Process that draw bar plot for the feature importance '''
     
     _ = plt.bar(X, Y, width = barW, color = plotC)
-    plt.title(title, fontsize = 15, fontweight = 450)
+    plt.title(title, fontsize = 11, fontweight = 450)
     plt.xlabel(xLabel, fontsize = xLabelFS)
     plt.tick_params(top=False,bottom=False,left=False,right=False,labelleft=False,labelbottom=True)
     plt.xticks(fontsize = xTicksFS, rotation = rot, ha = 'right')
@@ -171,4 +171,4 @@ def plotFeatImp(X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45,
     colors = {'Basic':'g', 'TF-IDF':'b', 'CountV' : 'r'}         
     labels = list(colors.keys())
     handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
-    plt.legend(handles, labels)
+    plt.legend(handles, labels, fontsize = barTxtFS)

@@ -40,37 +40,24 @@ def modelValidation(trainX, trainY, testX, testY, lstPipe):
         
     return lstPred
 
-def bestModel(bestM, fig, top = 10):
+def bestModel(trainX, trainY, testX, bestM, top = 10):
     
     ''' Process that predicts and print feature importance with the final classifier '''
     
     print('{}\n== BEST MODEL ==\n{}\n'.format('='*16, '='*16))
     print('     {}\n'.format(bestM.named_steps['clf']))
     print('Fitting model to train data...')
-    bestM.fit(data.trainX, data.trainY)
-    self.featImp(bestM, fig, top = top)
+    bestM.fit(trainX, trainY)
     print('\nPredicting with test data...')
-    pred = bestM.predict(data.testX)
+    pred = bestM.predict(testX)
     savePred(pred)
+    return bestM
 
-def featImp(model, fig, top):
-    
-    ''' Plot feature importance of the best model '''
-    
-    imp = model.named_steps['clf'].coef_[0].tolist()
-    names = model.named_steps['feat'].get_feature_names()
-    featDF = pd.DataFrame(list(zip(names, imp)), 
-                          columns =['Name', 'Imp']) 
-    featDF.sort_values(by='Imp', ascending = False, inplace = True)
-    featDF = featDF.head(top)
-    pg.setStyle('white')    
-    pg.plotFeatImp(featDF['Name'], featDF['Imp'], fig, 'Feature importance', '')
-    plt.show()
 
 def savePred(pred):
     
     ''' Save predictions to an excel file '''
     
     finalDF = pd.DataFrame(pred)
-    finalDF.to_excel(data.predFile, index=False)
-    print('Predictions exported') 
+    finalDF.to_excel('myData/SPAM_Pred.xlsx', index=False)
+    print('Predictions exported\n') 
