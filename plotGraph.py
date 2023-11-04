@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
+import itertools
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
 
 ''' Class that plot graphs '''
     

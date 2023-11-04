@@ -21,40 +21,24 @@ def baseline(Xtrain, Xtest, clf, lstScoring, cv = 5):
     for scoring in lstScoring:
         spc = " "*(9-len(scoring))
         score = cross_val_score(clf, Xtrain, Xtest, cv=cv, scoring = scoring).mean()
-        print('      {} {} --> {:.4f}'.format(scoring.capitalize(), spc, score))
+        print('     {} {} --> {:.4f}'.format(scoring.capitalize(), spc, score))
     print('================================')
 
-def paramTuning(X, y, pipe, pipeN, parGrid, cv = 5, score = 'accuracy', vrb = 0):
-    
-    ''' Hyperparameter tuning process '''
-    
-    cols = ['params']
-    for sc in score:
-        cols.append('mean_test_' + sc)
-        
-    gridSCV = GridSearchCV(estimator = pipe, param_grid = parGrid, cv= cv,
-                           scoring = score, n_jobs = -1, verbose = vrb, refit= False)
-    gridSCV.fit(X, y)
-    gscvDF = pd.DataFrame(gridSCV.cv_results_)
-    rstDF = gscvDF[gscvDF['rank_test_' + score[-1]] == 1][cols].iloc[0]
-    strHead = '='*(len(pipeN)+6)
-    print('{}\n== {} ==\n{}\n'.format(strHead, pipeN, strHead))
-    print('Parametros: {}\n'.format(rstDF[cols[0]]))
-    for i in range(len(score)):
-        spc = " "*(9-len(score[i]))
-        print('{} {} --> {:.4f}'.format(score[i].capitalize(), spc, rstDF[cols[i+1]]))
-
-def modelValidation(lstPipe, lstPipeN, lstLbl, figSizeCM = [6,3]):
+def modelValidation(trainX, trainY, testX, testY, lstPipe):
     
     ''' Process that validates models and print results '''
-
+    
+    lstPred = []
     for i in range(len(lstPipe)):
-        lstPipe[i].fit(data.trainX, data.trainY)
-        pred = lstPipe[i].predict(data.testX)
-        pg.setStyle(style = 'white')
-        pg.plotConfMatrix(lstPipeN[i], data.testY, pred, lstLbl, 
-                          cmap='GnBu', figSize = figSizeCM, normalize = True)
-        plt.show()
+        lstPipe[i].fit(trainX, trainY)
+        pred = lstPipe[i].predict(testX)
+        #pg.setStyle(style = 'white')
+        #pg.plotConfMatrix(lstPipeN[i], testY, pred, lstLbl, 
+        #                 cmap='GnBu', figSize = figSizeCM, normalize = True)
+        #plt.show()
+        lstPred.append(pred)
+        
+    return lstPred
 
 def bestModel(bestM, fig, top = 10):
     
