@@ -79,7 +79,7 @@ def plotBarH(X, y, fig, title, width, nType = '', symbol = '',
     
     setStyle('white')
     br = plt.barh(X, y, color = plotC, alpha = 0.7)
-    plt.title(title, fontsize = 11, y = 1.05)
+    plt.title(title, fontsize = 10, y = 1.05)
     plt.yticks(fontsize = 9)
     plt.xticks(fontsize = 0)
     plt.rcParams['axes.facecolor'] = 'white'
@@ -99,7 +99,8 @@ def plotBarH(X, y, fig, title, width, nType = '', symbol = '',
                        ha='center', color='black', fontsize=fontS)
         
 def plotConfMatrix(clfN, yTest, yPred, target_names, title='Confusion matrix', 
-                   cmap=None, figSize = [8,6], normalize=True):
+                   cmap=None, figSize = [8,6], normalize=True, lblFS = 9,
+                   txtFS = 9, legFS = 9):
     
     ''' Process that draw the confussion matrix for given predictions '''
     
@@ -114,30 +115,30 @@ def plotConfMatrix(clfN, yTest, yPred, target_names, title='Confusion matrix',
     cax = ax.matshow(cm, cmap=cmap)
     if normalize : fig.colorbar(cax, ticks=np.arange(0,101,20))
     else : fig.colorbar(cax)
-    ax.set_xticklabels([''] + target_names)
-    ax.set_yticklabels([''] + target_names)
+    ax.set_xticklabels([''] + target_names, fontsize = 9)
+    ax.set_yticklabels([''] + target_names, fontsize = 9)
     plt.tick_params(axis='both', which='major', length=0)
-    plt.ylabel('True', fontsize = 12)
-    plt.xlabel('Predicted', fontsize = 12)
+    plt.ylabel('True', fontsize = lblFS)
+    plt.xlabel('Predicted', fontsize = lblFS)
     thresh = cm.max() / 1.5 if normalize else cm.max() / 2
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         if normalize: plt.text(j, i, "{:0.2f}%".format(cm[i, j]),
                             horizontalalignment="center",
                             color="white" if cm[i, j] > thresh else "black",
-                            fontweight = 568, fontsize = 12)
+                            fontweight = 568, fontsize = txtFS)
         else: plt.text(j, i, "{:,}".format(cm[i, j]),
                        horizontalalignment="center",
                        color="white" if cm[i, j] > thresh else "black",
-                       fontweight = 568, fontsize = 12)
+                       fontweight = 568, fontsize = txtFS)
     plt.tight_layout()
     ax.xaxis.set_label_coords(0.5, -0.075)
     
     # Print scores
-    ax.text(2.55,-0.45,'== '+clfN+' ==',fontsize=12)
-    ax.text(2.55,-0.20,'Accuracy: '+str(round(accuracy_score(yTest, yPred),4)),fontsize=12)
-    ax.text(2.55,0.0,'Precision: '+str(round(precision_score(yTest, yPred),4)),fontsize=12)
-    ax.text(2.55,0.2,'Recall: '+str(round(recall_score(yTest, yPred),4)),fontsize=12)
-    ax.text(2.55,0.4,'F1: '+str(round(f1_score(yTest, yPred),4)),fontsize=12)
+    ax.text(2.55,-0.45,'== '+clfN+' ==',fontsize = legFS)
+    ax.text(2.55,-0.20,'Accuracy: '+str(round(accuracy_score(yTest, yPred),4)),fontsize=legFS)
+    ax.text(2.55,0.0,'Precision: '+str(round(precision_score(yTest, yPred),4)),fontsize=legFS)
+    ax.text(2.55,0.2,'Recall: '+str(round(recall_score(yTest, yPred),4)),fontsize=legFS)
+    ax.text(2.55,0.4,'F1: '+str(round(f1_score(yTest, yPred),4)),fontsize=legFS)
     
 def plotFeatImp(X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45,
                 xTicksFS = 11, plotC = 'b', barW = 0.9, barTxtFS = 11, simb = ''):

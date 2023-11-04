@@ -1,0 +1,626 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@ SMS CLASSIFIER CLASSES HELP  @@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	
+	###########################
+	### CLASS dataHandler() ###
+	###########################
+	
+	* Class that loads, process and transform the data.
+	
+	__init__(self, dataFile, targCol = '', printI = True):
+    
+		Function that initialize the object.
+		
+		Arguments
+		---------
+		printI:     Boolean value to print or not dataframe info in checkAll process, by default True.
+	
+	loadCsv(self, fileName, encod = 'utf-8', skRows = 0):
+	
+		Function that load the data into a dataframe.
+		
+		Arguments
+		---------
+		fileName:   Name of the CSV file to load.
+		encode:     Encode format of the text, by default 'utf-8'.
+		skRows:     Rows to skip in the cvs, by defailt 0.
+	
+	renameCols(self, df, cols):
+	
+        Function that rename cols on given DataFrame.
+		
+		Arguments
+		---------
+		df:         Dataframe
+		cols:       List of new column names to update.
+		
+	checkAll(self, df, cols, newColName, oldT, newT, DelD = False, DelN = False, dropC = False):
+	
+		Function that call the processes that chack data integrity on a given dataframe.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+		cols:       List of new column names to update.
+		newColName: Name of the merged new column.
+		oldT:       Current target feature column name.
+		newT:       New target feature column name.
+		DelD:       Delete or not duplicates values during the check, by default False.
+		DelN:       Delete or not NaN values during the check, by default False.
+		dropC:      Drop columns after the merge, by default False.
+		
+	printShape(self, df):
+		
+		Function that prints the shape of a given dataframe.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+
+	printInfo(self, df):
+	
+		Function that prints the info of a given dataframe.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+	
+	checkNaN(self, df, Del = False):
+		
+		Function that looks for Nan values of a given dataframe, and delete if requested.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+		Del:        Delete or not Nan rows, by default False.
+
+	checkDup(self, df, Del = False):
+		
+		Function that looks for duplicated rows of a given dataframe, and delete if requested.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+		Del:        Delete or not Nan rows, by default False.
+	
+	mergeCorp(self, df, cols, newColName, oldT, newT, fillVal = '', dropC = False, dropT = True):
+        
+        Function that merge SMS columns in one corpus and creates new target feature.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+		cols:       List of new column names to update.
+		newColName: Name of the merged new column.
+		oldT:       Current target feature column name.
+		newT:       New target feature column name.
+		fillVal:    Value to apply the fillna method on the dataframe.
+		dropC:      Drop columns after the merge, by default False.
+		dropC:      Drop old target volumn after the change, by default True.
+	
+	groupDF(self, col, method = 'mean'):
+	
+		Function that groups by a method the values of a column on a given dataframe, then returns it
+
+		Arguments
+		--------- 
+		col:        Feature to group by.
+		method:     Method to apply, ny default 'mean'.
+		
+	outliersC(self, df, limit = 1.5):
+	
+		Function that count the number of lower/upper outliers of a feature in a given DF.
+
+		Arguments
+		---------
+		df:         Dataframe.
+		limit:      Whisker limit, by default 1.5 IQR.
+	
+	removeOutL(self, df, lstCols, limit = 2.0):
+        
+        Function that remove outliers only for EDA.
+		
+		Arguments
+		---------
+		df:         Dataframe.
+		lstCols:    List of columns to remove outliers.
+		limit:      Whisker limit, by default 1.5 IQR.
+	
+	dropRows(self, df, indexList):
+	
+		Function that delete rows from a dataframe, given the list of indexes.
+		
+		---------
+		df:         Dataframe.
+		indexList:  List of the indexes of the rows to delete.
+	
+	bowCount(self, X, targV):
+        
+        Function that applies count vectorizer of a given array, and return the top-10 words BoW pero target value.
+		
+		X:          Array.
+		targV:      Target value.
+		
+	dataPrep(self, df, feat, targ, TTsplit, strat, norm = False:
+        
+        Function that preprocess data for modeling
+		
+		Arguments
+		--------- 
+		df:         Dataframe.
+		feat:       Feature list.
+		targ:       Target feature.
+		TTsplit:    Train/test split size.
+		strat:      Stratified feature.
+		norm:       Normalize with StandardScaler or not, by default False.
+	
+	splitTrainTest(self, X,y,size,strat):
+	
+		Function that splits the data in train and test datasets.
+
+		Arguments
+		--------- 
+		X:          Features dataset.
+		y:          Target feature dataset.
+		size:       Test size.
+		strat:      Stratified feature.
+		
+		
+	normalize(self, trDF, tsDF, cols):
+        
+        FUnction that normalize (StandardScaler) the data
+		
+		Arguments
+		---------
+		trDF:       Train dataframe.
+		trDF:       Test dataframe.
+		cols:       Feature columns to normalize.
+	
+	#########################
+	### CLASS plotGraph() ###
+	#########################
+	
+	* Class that draw plots.
+	
+	__init__(self):
+        
+		Function that initialize the object.
+
+    setStyle(self, style = 'darkgrid'):
+        
+		Function sets the seaborn color style.
+		
+		Arguments
+		---------
+		style:      Style name, by default 'white'.
+	
+	plotBarText(self, df, fig, title, xLabel, xTicks, xLabelFS = 10,
+                xTicksFS = 12, plotC = 'b', barW = 0.65, barTxtFS = 10):
+        
+        Function that draws a tuned bar plot with text above the bars.
+	
+		Arguments
+		---------
+		df:         Dataframe.
+		fig:        Figure.
+		title:      Plot title.
+		xLabel:     Label for the X axis.
+		xTicks:     Tick labels for the X axis.
+		xLabelFS:   X axis label font size, by default 10.
+		xTicksFS:   X axis tick labels font size, by default 11.
+		plotC:      Plot color, by default blue.
+		barW:       Width of the bars, by default 0.65.
+		barTxtFS:   Font size of the values above the bars, by default 10.
+		titleFS:    Font size of the plot title.
+		
+	plotKDE(self, fig, title, kde, featureD, labels, 
+            colors = ['b', 'g'], legLoc = 0, legFS = 12, titleFS = 15):
+	
+		Function that draw a KDE plot.
+
+		Arguments
+		---------
+		fig:        Figure.
+		title:      Plot Title.
+		featD:      Density feature.
+		kde:        Dataframes.
+		labels:     Labels for the densities.
+		colors:     Colors for the densities.
+		legLoc:     Location of the legend, by default 0.
+		legFS:      Font size for the legend, by default 10.
+		titleFS:    Font size for the title, by default 15.
+		
+	plotCorr(self, corr, title, figSize = [5,5], titleFS = 15, cmap = 'blues', annot = True, 
+             square = True, fmt = '.2f', vMM = [-1,1], lineW = 0.25, cbarD = {}, rot = 90,
+             annD = {}, ticksFS = 10, yLim = [0.0,0.0]):
+
+		Function that plot a correlation matrix 
+		
+		Arguments
+		---------
+		corr:       Correlation dataframe.
+		title:      Plot title.
+		figSize:    Figure size.
+		titleFS:    Title font size, by default 15.
+		cmap:       Color map for the heatmap, by default 'blues'.
+		annot:      Print the correlation scores, by default True.
+		square:     Force square shape of the heatmap, by default True.
+		fmt:        Format of the annotations, by default 2 decimals.
+		vMM:        Min and Max values for the color bar of the heatmap, by default [-1,1].
+		lineW:      Border line width of the heatmap, by default 0.25.
+		cBarD:      Color bar dictionary of properties, by default {}.
+		rot:        Rotation angle of X axis labels, by default 90.
+		annD:       Annotations dictionary of properties, by default {}.
+		ticksFS:    Tick labels font size, by default 10.
+		yLim:       Y axis plot limits, by default [0.0,0.0].
+	
+	plotBox(self, df, fig):
+	
+		Function that draws a boxplot.
+	
+		Arguments
+		---------
+		df:         Dataframe.
+		fig:        Figure.
+			 
+	plotBarH(self, X, y, fig, title, width, nType = '', symbol = '', 
+             fontS = 10, plotC = 'b', sep = [1,2]):
+        
+        Function that draw a tuned horizontal bar plot with text on the bars
+		
+		Arguments
+		---------
+		X:          X axis values.
+		y:          y axis values.
+		fig:        Figure.
+		title:      Plot title.
+		width:      Width of the bars.
+		factor:     Factor to adjust text above the bars.
+		nType:      Numeric type of the values above the bars, by default empty.
+		symbol:     Symbol to join the values above the bars, by default empty.
+		fontS:      Font size of the values above the bars, by default 10.
+		plotC:      Plot color, by default blue.
+		sep:        Separator list, in function of the value of the bar, by default [1,2]
+		
+	plotConfMatrix(self, clfN, yTest, yPred, target_names, title='Confusion matrix', 
+                   cmap=None, figSize = [8,6], normalize=True):
+				   
+		Function that given predictions and actual labels, make a Confussion matrix plot (Heatmap)
+	
+		Arguments
+		---------
+		clfN:       Classifier name.
+		yTest:      Actual labels.
+		yPred:      Predicted labels.
+		title:      Title of the plot, by default Confusion matrix.
+		cmap:       Color map, by default none.
+		figSize:    Figure size.
+		normalize:  Boolean value to normalize or not the values of the matrix, by default True.
+		txtFS:      Font size of matrix values, by default 9.
+        labelFS:    Font size of the X and Y labels, by default 9.
+		legFS:      Font size of text legend, by default 9.
+	
+	plotFeatImp(self, X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45,
+                xTicksFS = 11, plotC = 'b', barW = 0.9, barTxtFS = 11, simb = ''):
+        
+        Modified version of plotBarText, which colors bars on a given condition
+		
+		Arguments
+		---------
+		X:          X axis values.
+		y:          y axis values.
+		fig:        Figure.
+		title:      Plot title.
+		xLabel:     Label for the X axis.
+		xLabelFS:   X axis label font size, by default 10.
+		rot:        Rotation for the xTicksLabels
+		xTicksFS:   X axis tick labels font size, by default 11.
+		plotC:      Plot color, by default blue.
+		barW:       Width of the bars, by default 0.9.
+		barTxtFS:   Font size of the values above the bars, by default 11.
+		simb:       Symbol to join the values above the bars, by default empty.
+
+	plotROC(self, xList, yList, fig, lstCLFN, lstScores, xLabel, yLabel, 
+            title, titleFS = 15, legLoc = 0, legFS = 10):	
+	
+		Arguments
+		---------
+		xList:      X axis.
+		yList:      Y axis.
+		fig:        Figure.
+		lstCLFN:    Classifiers names.
+		stCLFN:     ROC scores.
+		xLabel:     Label of the X axis.
+		yLabel:     Label of the y axis.
+		title:      Plot title.
+		titleFS:    Font size of the title, by default 15.
+		legLoc:     Legend location, by default 0.
+		legFS:      Font size of the legend, by default 10.
+		
+	plotFeatImp(self, X, Y, fig, title, xLabel, xLabelFS = 10, rot = 45,
+                xTicksFS = 11, plotC = 'b', barW = 0.9, barTxtFS = 11):
+				
+	Function that draws a tuned bar plot for the feature importances.
+		
+		Arguments
+		---------
+		X:          X axis values.
+		y:          y axis values.
+		fig:        Figure.
+		title:      Plot title.
+		xLabel:     Label for the X axis.
+		xLabelFS:   X axis label font size, by default 10.
+		rot:        Rotation angle of X axis labels, by default 45.
+		xTicksFS:   X axis tick labels font size, by default 11.
+		plotC:      Plot color, by default blue.
+		barW:       Width of the bars, by default 0.9.
+		barTxtFS:   Font size of the values above the bars, by default 11.
+	
+	#########################
+	### CLASS basicFeat() ###
+	#########################	
+	
+	Class that creates basic features from SMS corpus, for analysis and modeling.
+	
+	__init__(self):
+        
+		Function that initialize the object.
+		
+	fit(self, X, y=None):
+        
+		Fit step of the class.
+		
+		Arguments
+		---------
+		X:          X array.
+		y:          y array, by default None.
+
+    transform(self, X):
+	
+		Transform step of the class, returns an array with the features created.
+		
+		Arguments
+		---------
+		X:          X array.
+        
+	get_feature_names(self):
+        
+		Function that returns the name of the features created
+		
+		Arguments
+		---------
+	
+	createFeat(self, X):
+        
+        Function that creates basic features from SMS corpus, returning an array.
+		
+		Arguments
+		---------
+		X:          X array.
+		
+	createCols(self, df):
+        
+        Function that creates basic features from SMS corpus, updates the dataframe pased.
+		
+		Arguments
+		---------
+		X:          X array.
+		
+	lenCount(self, dfO, dfT, col, colN):
+        
+		Function that calculate the length of the SMS corpus, creating a new column on the target dataframe.
+		
+		Arguments
+		---------
+		dfO:        Dataframe where the corpus is.
+		dfT:        Dataframe where the new feature will be created.
+		col:        Corpus column.
+		colN:       New feature column name.
+    
+    splitWordsC(self, sms):
+    
+		Function that splits the SMS corpus in words, and return the count.
+		
+        Arguments
+		---------
+		sms:        SMS corpus.
+        
+    wordCount(self, dfO, dfT, col, colN):
+    
+		Function that calculate the number of words of the SMS corpus, creating a new column on the target dataframe.
+		
+		Arguments
+		---------
+		dfO:        Dataframe where the corpus is.
+		dfT:        Dataframe where the new feature will be created.
+		col:        Corpus column.
+		colN:       New feature column name.
+    
+    splitWords(self, sms):
+        
+		Function that splits the SMS corpus in words, and return the count if they are uppercase.
+		
+        Arguments
+		---------
+		sms:        SMS corpus.
+        
+    wordUpper(self, dfO, dfT, col, colN):
+    
+		Function that calculate the number of uppercase words of the SMS corpus, creating a new column on the target dataframe.
+		
+		Arguments
+		---------
+		dfO:        Dataframe where the corpus is.
+		dfT:        Dataframe where the new feature will be created.
+		col:        Corpus column.
+		colN:       New feature column name.
+        
+    applyRegEx(self, sms):
+    
+		Function that counts non-ascii characters  of the SMS corpus, excluding commas, points and whitespaces.
+		
+        Arguments
+		---------
+		sms:        SMS corpus.
+    
+    specCharCount(self, dfO, dfT, col, colN):
+         
+		Function that calculate the number of special characters of the SMS corpus, creating a new column on the target dataframe.
+		
+		Arguments
+		---------
+		dfO:        Dataframe where the corpus is.
+		dfT:        Dataframe where the new feature will be created.
+		col:        Corpus column.
+		colN:       New feature column name.
+	
+	avgWordLen(self, sms):
+        
+		Function that calculate the mean of the word length of the SMS corpus.
+		
+        Arguments
+		---------
+		sms:        SMS corpus.
+            
+    wordMeanLen(self, dfO, dfT, col, colN):
+        
+		Function that  calculate the mean of the word length of the SMS corpus, creating a new column on the target dataframe.
+		
+		Arguments
+		---------
+		dfO:        Dataframe where the corpus is.
+		dfT:        Dataframe where the new feature will be created.
+		col:        Corpus column.
+		colN:       New feature column name.
+	
+	#############################
+	### CLASS txtNormalizer() ###
+	#############################
+	
+	Class that creates cleans the SMS corpus for analysis and modeling.
+	
+	__init__(self):
+        
+		Function that initialize the object.
+	
+	txtClean(self, sms):
+        
+        Function that applies all the cleaning methods on the SMS corpus.
+		
+		Arguments
+		---------
+		sms:        SMS corpus.
+		
+	toLower(self, sms):
+	
+        Function that turns in lowercase all the SMS corpus words.
+		
+		Arguments
+		---------
+		sms:        SMS corpus.
+    
+    removePunt(self, sms):
+        
+		Function that removes all puntuaction characters in the SMS corpus.
+		
+		Arguments
+		---------
+		sms:        SMS corpus.
+        
+    removeSW(self, sms):
+        
+		Function that removes all stop words in the SMS corpus.
+		
+		Arguments
+		---------
+		sms:        SMS corpus.
+        
+    smsLemma(self, sms):
+        
+		Function that lemmatize the words in the SMS corpus.
+		
+		Arguments
+		---------
+		sms:        SMS corpus.
+	
+	############################
+	### CLASS modelHandler() ###
+	############################	
+	
+	Class that handles the ML models and its processes.
+	
+	__init__(self):
+        
+		Function that initialize the object.
+	
+	baseline(self, clf, lstScoring, cv = 5):
+        
+        Function that creates a baseline with basic features.
+		
+		Arguments
+		---------
+		clf:        Model.
+		lstScoring: List of scores to calculate.
+		cv:         Cross validation folders, by default 5.
+		
+	paramTunning(self, pipe, clfN, parGrid, cv = 5, score = 'accuracy',
+                 vrb = 0):
+        
+		Given a classifier, the hyperparameters grid, and the score, perform the GridSearchCV 
+		and print the best results data with it hyperparameters.
+        
+		Arguments
+		---------
+		pipe:      Model pipeline.
+		pipeN:     Model name.
+		parGrid:   Hyperparameters grid.
+		cv:        Cross-validation folders, by default 5.
+		score:     Score to be calculated, by default Accuracy.
+	
+	modelValidation(self, lstPipe, lstPipeN, lstLbl, figSizeCM = [6,3]):
+	
+		Function that validate the models with functions that do:
+			* Fit the model with the train data and predict with the test features.
+			* Plot a confusion matrix of the predictions with scores.
+		
+		Arguments
+		---------
+		lstPipe:   List of model pipelines to validate.
+		lstPipeN:  List of models name.
+		lstLbl:    Labels for the confusion matrix.
+		figSizeCM: Figure size of the confusion matrix.
+	
+	bestCLF(self, bestM, fig, top = 10):
+	
+		Function that works with the final selected model doing:
+			*Show the model details
+			* Fit the model with the train data and predict with the test features.
+			* Plot the most important features.
+			* Save the predictions to an excel file.
+
+		Arguments
+		---------
+		bestM:     Final model.
+		fig:       Figure to plot feature importance.
+		top:       Number of feature to plot, by default = 10.
+		
+	featImp(self, model, fig, top):
+        
+        Function that plots the feature importance.
+        
+        Arguments
+		---------
+		model:     Final model.
+		fig:       Figure to plot feature importance.
+		top:       Number of feature to plot.
+		
+	savePred(self, pred):
+        
+		Function that takes an array of predictions and save it into an excel file.
+		
+		Arguments
+		---------
+		pred:      Predictions array.
+        
+    
